@@ -6,7 +6,7 @@ if (empty($_SESSION['active'])) {
 }
 
 include_once '../conexion_grs_joya/conexion.php';
-$conexion = conectar_aqp();
+$conexion = conectar_sanidad();
 if (!$conexion) {
     die("Error de conexión: " . mysqli_connect_error());
 }
@@ -96,6 +96,24 @@ if (!$conexion) {
                     <div class="submenu" id="mantenimientoSubmenu">
                         <div class="submenu-item active" onclick="showView('EmpresaTransporte')">
                             📋 Empresas Transporte
+                        </div>
+                        <div class="submenu-item" onclick="showView('Laboratorio')">
+                            🔬 Laboratorios
+                        </div>
+                        <div class="submenu-item" onclick="showView('TipoMuestra')">
+                            🧪 Tipos de Muestra
+                        </div>
+                        <div class="submenu-item" onclick="showView('PaqueteAnalisis')">
+                            📦 Paquetes de Análisis
+                        </div>
+                        <div class="submenu-item" onclick="showView('Analisis')">
+                            🔬 Análisis
+                        </div>
+                        <div class="submenu-item" onclick="showView('MuestraCabecera')">
+                            📋 Muestras - Cabecera
+                        </div>
+                        <div class="submenu-item" onclick="showView('MuestraDetalle')">
+                            📝 Muestras - Detalle
                         </div>
                     </div>
                 </div>
@@ -563,7 +581,7 @@ if (!$conexion) {
                     <h1>🚚 Empresas de Transporte</h1>
                     <p>Administre las empresas de transporte registradas en el sistema</p>
                 </div>
-
+<
                 <div class="form-container">
                     <!-- Botón para añadir nueva empresa -->
                     <div style="margin-bottom: 20px; text-align: right;">
@@ -603,6 +621,389 @@ if (!$conexion) {
                                     }
                                 } else {
                                     echo '<tr><td colspan="3" style="text-align: center;">No hay empresas registradas</td></tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA LABORATORIO -->
+            <div id="viewLaboratorio" class="content-view">
+                <div class="content-header">
+                    <h1>🔬 Laboratorios</h1>
+                    <p>Administre los laboratorios registrados en el sistema</p>
+                </div>
+
+                <div class="form-container">
+                    <!-- Botón para añadir nuevo laboratorio -->
+                    <div style="margin-bottom: 20px; text-align: right;">
+                        <button type="button" class="btn btn-primary" onclick="openLaboratorioModal('create')">
+                            ➕ Nuevo Laboratorio
+                        </button>
+                    </div>
+
+                    <!-- Tabla de laboratorios -->
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="laboratorioTableBody">
+                                <?php
+                                $query = "SELECT codigo, nombre FROM com_laboratorio ORDER BY nombre";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result && mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<tr>';
+                                        echo '<td>' . htmlspecialchars($row['codigo']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['nombre']) . '</td>';
+                                        echo '<td>
+                                <button class="btn-icon" title="Editar" onclick="openLaboratorioModal(\'edit\', ' . (int) $row['codigo'] . ', \'' . addslashes(htmlspecialchars($row['nombre'])) . '\')">
+                                    ✏️
+                                </button>
+                                <button class="btn-icon" title="Eliminar" onclick="confirmLaboratorioDelete(' . (int) $row['codigo'] . ')">
+                                    🗑️
+                                </button>
+                              </td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="3" style="text-align: center;">No hay laboratorios registrados</td></tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA TIPO DE MUESTRA -->
+            <div id="viewTipoMuestra" class="content-view">
+                <div class="content-header">
+                    <h1>🧪 Tipos de Muestra</h1>
+                    <p>Administre los tipos de muestra registrados en el sistema</p>
+                </div>
+
+                <div class="form-container">
+                    <!-- Botón para añadir nuevo tipo de muestra -->
+                    <div style="margin-bottom: 20px; text-align: right;">
+                        <button type="button" class="btn btn-primary" onclick="openTipoMuestraModal('create')">
+                            ➕ Nuevo Tipo de Muestra
+                        </button>
+                    </div>
+
+                    <!-- Tabla de tipos de muestra -->
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Long. Código</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tipoMuestraTableBody">
+                                <?php
+                                $query = "SELECT codigo, nombre, descripcion, longitud_codigo FROM com_tipo_muestra ORDER BY nombre";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result && mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<tr>';
+                                        echo '<td>' . htmlspecialchars($row['codigo']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['nombre']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['descripcion'] ?? '') . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['longitud_codigo']) . '</td>';
+                                        echo '<td>
+                                <button class="btn-icon" title="Editar" onclick="openTipoMuestraModal(\'edit\', ' . (int) $row['codigo'] . ', \'' . addslashes(htmlspecialchars($row['nombre'])) . '\', \'' . addslashes(htmlspecialchars($row['descripcion'] ?? '')) . '\', ' . (int) $row['longitud_codigo'] . ')">
+                                    ✏️
+                                </button>
+                                <button class="btn-icon" title="Eliminar" onclick="confirmTipoMuestraDelete(' . (int) $row['codigo'] . ')">
+                                    🗑️
+                                </button>
+                              </td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="5" style="text-align: center;">No hay tipos de muestra registrados</td></tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA PAQUETE DE ANÁLISIS -->
+            <div id="viewPaqueteAnalisis" class="content-view">
+                <div class="content-header">
+                    <h1>📦 Paquetes de Análisis</h1>
+                    <p>Administre los paquetes de análisis registrados en el sistema</p>
+                </div>
+
+                <div class="form-container">
+                    <!-- Botón para añadir nuevo paquete -->
+                    <div style="margin-bottom: 20px; text-align: right;">
+                        <button type="button" class="btn btn-primary" onclick="openPaqueteAnalisisModal('create')">
+                            ➕ Nuevo Paquete
+                        </button>
+                    </div>
+
+                    <!-- Tabla de paquetes de análisis -->
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Tipo de Muestra</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paqueteAnalisisTableBody">
+                                <?php
+                                $query = "SELECT p.codigo, p.nombre, t.nombre as tipo_muestra 
+                                          FROM com_paquetes_analisis p 
+                                          INNER JOIN com_tipo_muestra t ON p.tipoMuestra = t.codigo 
+                                          ORDER BY p.nombre";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result && mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<tr>';
+                                        echo '<td>' . htmlspecialchars($row['codigo']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['nombre']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['tipo_muestra']) . '</td>';
+                                        echo '<td>
+                                <button class="btn-icon" title="Editar" onclick="openPaqueteAnalisisModal(\'edit\', ' . (int) $row['codigo'] . ')">
+                                    ✏️
+                                </button>
+                                <button class="btn-icon" title="Eliminar" onclick="confirmPaqueteAnalisisDelete(' . (int) $row['codigo'] . ')">
+                                    🗑️
+                                </button>
+                              </td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="4" style="text-align: center;">No hay paquetes de análisis registrados</td></tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA ANÁLISIS -->
+            <div id="viewAnalisis" class="content-view">
+                <div class="content-header">
+                    <h1>🔬 Análisis</h1>
+                    <p>Administre los análisis registrados en el sistema</p>
+                </div>
+
+                <div class="form-container">
+                    <!-- Botón para añadir nuevo análisis -->
+                    <div style="margin-bottom: 20px; text-align: right;">
+                        <button type="button" class="btn btn-primary" onclick="openAnalisisModal('create')">
+                            ➕ Nuevo Análisis
+                        </button>
+                    </div>
+
+                    <!-- Tabla de análisis -->
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Tipo de Muestra</th>
+                                    <th>Paquete de Análisis</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analisisTableBody">
+                                <?php
+                                $query = "SELECT a.codigo, a.nombre, t.nombre as tipo_muestra, p.nombre as paquete_analisis 
+                                          FROM com_analisis a 
+                                          INNER JOIN com_tipo_muestra t ON a.tipoMuestra = t.codigo 
+                                          LEFT JOIN com_paquetes_analisis p ON a.PaqueteAnalisis = p.codigo 
+                                          ORDER BY a.nombre";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result && mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<tr>';
+                                        echo '<td>' . htmlspecialchars($row['codigo']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['nombre']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['tipo_muestra']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['paquete_analisis'] ?? 'N/A') . '</td>';
+                                        echo '<td>
+                                <button class="btn-icon" title="Editar" onclick="openAnalisisModal(\'edit\', ' . (int) $row['codigo'] . ')">
+                                    ✏️
+                                </button>
+                                <button class="btn-icon" title="Eliminar" onclick="confirmAnalisisDelete(' . (int) $row['codigo'] . ')">
+                                    🗑️
+                                </button>
+                              </td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="5" style="text-align: center;">No hay análisis registrados</td></tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA MUESTRA CABECERA -->
+            <div id="viewMuestraCabecera" class="content-view">
+                <div class="content-header">
+                    <h1>📋 Muestras - Cabecera</h1>
+                    <p>Administre las cabeceras de envío de muestras registradas</p>
+                </div>
+
+                <div class="form-container">
+                    <!-- Botón para añadir nueva muestra -->
+                    <div style="margin-bottom: 20px; text-align: right;">
+                        <button type="button" class="btn btn-primary" onclick="openMuestraCabeceraModal('create')">
+                            ➕ Nueva Cabecera de Muestra
+                        </button>
+                    </div>
+
+                    <!-- Tabla de muestras cabecera -->
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Código Envío</th>
+                                    <th>Fecha Envío</th>
+                                    <th>Hora</th>
+                                    <th>Laboratorio</th>
+                                    <th>Empresa Transporte</th>
+                                    <th>Responsable</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="muestraCabeceraTableBody">
+                                <?php
+                                $query = "SELECT m.codigoEnvio, m.fechaEnvio, m.horaEnvio, l.nombre as laboratorio, 
+                                          e.nombre as empresa_trans, m.usuarioResponsable 
+                                          FROM com_db_muestra_cabecera m 
+                                          INNER JOIN com_laboratorio l ON m.laboratorio = l.codigo 
+                                          INNER JOIN com_emp_trans e ON m.empTrans = e.codigo 
+                                          ORDER BY m.fechaEnvio DESC, m.horaEnvio DESC";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result && mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<tr>';
+                                        echo '<td>' . htmlspecialchars($row['codigoEnvio']) . '</td>';
+                                        echo '<td>' . date('d/m/Y', strtotime($row['fechaEnvio'])) . '</td>';
+                                        echo '<td>' . date('H:i', strtotime($row['horaEnvio'])) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['laboratorio']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['empresa_trans']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['usuarioResponsable']) . '</td>';
+                                        echo '<td>
+                                <button class="btn-icon" title="Ver Detalle" onclick="viewMuestraDetalle(\'' . addslashes($row['codigoEnvio']) . '\')">
+                                    👁️
+                                </button>
+                                <button class="btn-icon" title="Editar" onclick="openMuestraCabeceraModal(\'edit\', \'' . addslashes($row['codigoEnvio']) . '\')">
+                                    ✏️
+                                </button>
+                                <button class="btn-icon" title="Eliminar" onclick="confirmMuestraCabeceraDelete(\'' . addslashes($row['codigoEnvio']) . '\')">
+                                    🗑️
+                                </button>
+                              </td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="7" style="text-align: center;">No hay muestras registradas</td></tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA MUESTRA DETALLE -->
+            <div id="viewMuestraDetalle" class="content-view">
+                <div class="content-header">
+                    <h1>📝 Muestras - Detalle</h1>
+                    <p>Administre los detalles de las muestras enviadas</p>
+                </div>
+
+                <div class="form-container">
+                    <!-- Filtro por código de envío -->
+                    <div style="margin-bottom: 20px;">
+                        <div class="form-field" style="max-width: 400px;">
+                            <label>Filtrar por Código de Envío</label>
+                            <select id="filtroCodigoEnvio" onchange="filtrarMuestraDetalle()">
+                                <option value="">Todos</option>
+                                <?php
+                                $query = "SELECT DISTINCT codigoEnvio FROM com_db_muestra_cabecera ORDER BY codigoEnvio DESC";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<option value="' . htmlspecialchars($row['codigoEnvio']) . '">' . htmlspecialchars($row['codigoEnvio']) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de muestras detalle -->
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Código Envío</th>
+                                    <th>Posición</th>
+                                    <th>Fecha Toma</th>
+                                    <th>Código Referencia</th>
+                                    <th>N° Muestras</th>
+                                    <th>Observaciones</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="muestraDetalleTableBody">
+                                <?php
+                                $query = "SELECT codigoEnvio, posicionSolicitud, fechaToma, codigoReferencia, 
+                                          numeroMuestras, observaciones 
+                                          FROM com_db_muestra_detalle 
+                                          ORDER BY codigoEnvio DESC, posicionSolicitud";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result && mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<tr data-codigo-envio="' . htmlspecialchars($row['codigoEnvio']) . '">';
+                                        echo '<td>' . htmlspecialchars($row['codigoEnvio']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['posicionSolicitud']) . '</td>';
+                                        echo '<td>' . date('d/m/Y', strtotime($row['fechaToma'])) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['codigoReferencia']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['numeroMuestras']) . '</td>';
+                                        echo '<td>' . htmlspecialchars(substr($row['observaciones'] ?? '', 0, 50)) . (strlen($row['observaciones'] ?? '') > 50 ? '...' : '') . '</td>';
+                                        echo '<td>
+                                <button class="btn-icon" title="Ver Análisis" onclick="viewAnalisisDetalle(\'' . addslashes($row['codigoEnvio']) . '\', ' . (int) $row['posicionSolicitud'] . ')">
+                                    🔬
+                                </button>
+                                <button class="btn-icon" title="Editar" onclick="openMuestraDetalleModal(\'edit\', \'' . addslashes($row['codigoEnvio']) . '\', ' . (int) $row['posicionSolicitud'] . ')">
+                                    ✏
+                                </button>
+                                <button class="btn-icon" title="Eliminar" onclick="confirmMuestraDetalleDelete(\'' . addslashes($row['codigoEnvio']) . '\', ' . (int) $row['posicionSolicitud'] . ')">
+                                    🗑
+                                </button>
+                              </td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="7" style="text-align: center;">No hay detalles de muestra registrados</td></tr>';
                                 }
                                 ?>
                             </tbody>
@@ -662,10 +1063,328 @@ if (!$conexion) {
                 </div>
             </div>
         </div>
+
+        <!-- Modal para Crear/Editar Laboratorio -->
+        <div id="laboratorioModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 500px; width: 90%;">
+                <div class="modal-header">
+                    <h2 id="laboratorioModalTitle">➕ Nuevo Laboratorio</h2>
+                    <span class="close-modal" onclick="closeLaboratorioModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="laboratorioForm" onsubmit="return saveLaboratorio(event)">
+                        <input type="hidden" id="laboratorioModalAction" value="create">
+                        <input type="hidden" id="laboratorioEditCodigo" value="">
+
+                        <div class="form-field">
+                            <label class="required">Nombre del Laboratorio</label>
+                            <input type="text" id="laboratorioModalNombre" name="nombre" maxlength="255" required>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="closeLaboratorioModal()">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Crear/Editar Tipo de Muestra -->
+        <div id="tipoMuestraModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 600px; width: 90%;">
+                <div class="modal-header">
+                    <h2 id="tipoMuestraModalTitle">➕ Nuevo Tipo de Muestra</h2>
+                    <span class="close-modal" onclick="closeTipoMuestraModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="tipoMuestraForm" onsubmit="return saveTipoMuestra(event)">
+                        <input type="hidden" id="tipoMuestraModalAction" value="create">
+                        <input type="hidden" id="tipoMuestraEditCodigo" value="">
+
+                        <div class="form-field">
+                            <label class="required">Nombre del Tipo de Muestra</label>
+                            <input type="text" id="tipoMuestraModalNombre" name="nombre" maxlength="100" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Descripción</label>
+                            <textarea id="tipoMuestraModalDescripcion" name="descripcion" rows="3" maxlength="500"></textarea>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Longitud de Código</label>
+                            <input type="number" id="tipoMuestraModalLongitud" name="longitud_codigo" min="1" max="20" value="8" required>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="closeTipoMuestraModal()">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Crear/Editar Paquete de Análisis -->
+        <div id="paqueteAnalisisModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 500px; width: 90%;">
+                <div class="modal-header">
+                    <h2 id="paqueteAnalisisModalTitle">➕ Nuevo Paquete de Análisis</h2>
+                    <span class="close-modal" onclick="closePaqueteAnalisisModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="paqueteAnalisisForm" onsubmit="return savePaqueteAnalisis(event)">
+                        <input type="hidden" id="paqueteAnalisisModalAction" value="create">
+                        <input type="hidden" id="paqueteAnalisisEditCodigo" value="">
+
+                        <div class="form-field">
+                            <label class="required">Nombre del Paquete</label>
+                            <input type="text" id="paqueteAnalisisModalNombre" name="nombre" maxlength="100" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Tipo de Muestra</label>
+                            <select id="paqueteAnalisisModalTipoMuestra" name="tipoMuestra" required>
+                                <option value="">Seleccione...</option>
+                                <?php
+                                $query = "SELECT codigo, nombre FROM com_tipo_muestra ORDER BY nombre";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="closePaqueteAnalisisModal()">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Crear/Editar Análisis -->
+        <div id="analisisModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 600px; width: 90%;">
+                <div class="modal-header">
+                    <h2 id="analisisModalTitle">➕ Nuevo Análisis</h2>
+                    <span class="close-modal" onclick="closeAnalisisModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="analisisForm" onsubmit="return saveAnalisis(event)">
+                        <input type="hidden" id="analisisModalAction" value="create">
+                        <input type="hidden" id="analisisEditCodigo" value="">
+
+                        <div class="form-field">
+                            <label class="required">Nombre del Análisis</label>
+                            <input type="text" id="analisisModalNombre" name="nombre" maxlength="255" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Tipo de Muestra</label>
+                            <select id="analisisModalTipoMuestra" name="tipoMuestra" required>
+                                <option value="">Seleccione...</option>
+                                <?php
+                                $query = "SELECT codigo, nombre FROM com_tipo_muestra ORDER BY nombre";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Paquete de Análisis (Opcional)</label>
+                            <select id="analisisModalPaquete" name="paqueteAnalisis">
+                                <option value="">Ninguno</option>
+                                <?php
+                                $query = "SELECT codigo, nombre FROM com_paquetes_analisis ORDER BY nombre";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="closeAnalisisModal()">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Crear/Editar Muestra Cabecera -->
+        <div id="muestraCabeceraModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 700px; width: 90%;">
+                <div class="modal-header">
+                    <h2 id="muestraCabeceraModalTitle">➕ Nueva Cabecera de Muestra</h2>
+                    <span class="close-modal" onclick="closeMuestraCabeceraModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="muestraCabeceraForm" onsubmit="return saveMuestraCabecera(event)">
+                        <input type="hidden" id="muestraCabeceraModalAction" value="create">
+                        <input type="hidden" id="muestraCabeceraEditCodigo" value="">
+
+                        <div class="form-field">
+                            <label class="required">Código de Envío</label>
+                            <input type="text" id="muestraCabeceraModalCodigo" name="codigoEnvio" maxlength="20" required>
+                        </div>
+
+                        <div class="dual-group-container">
+                            <div class="form-field">
+                                <label class="required">Fecha de Envío</label>
+                                <input type="date" id="muestraCabeceraModalFecha" name="fechaEnvio" required>
+                            </div>
+
+                            <div class="form-field">
+                                <label class="required">Hora de Envío</label>
+                                <input type="time" id="muestraCabeceraModalHora" name="horaEnvio" required>
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Laboratorio</label>
+                            <select id="muestraCabeceraModalLaboratorio" name="laboratorio" required>
+                                <option value="">Seleccione...</option>
+                                <?php
+                                $query = "SELECT codigo, nombre FROM com_laboratorio ORDER BY nombre";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Empresa de Transporte</label>
+                            <select id="muestraCabeceraModalEmpTrans" name="empTrans" required>
+                                <option value="">Seleccione...</option>
+                                <?php
+                                $query = "SELECT codigo, nombre FROM com_emp_trans ORDER BY nombre";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Usuario Responsable</label>
+                            <input type="text" id="muestraCabeceraModalResponsable" name="usuarioResponsable" maxlength="100" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Autorizado Por</label>
+                            <input type="text" id="muestraCabeceraModalAutorizado" name="autorizadoPor" maxlength="100" required>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="closeMuestraCabeceraModal()">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Crear/Editar Muestra Detalle -->
+        <div id="muestraDetalleModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 700px; width: 90%;">
+                <div class="modal-header">
+                    <h2 id="muestraDetalleModalTitle">➕ Nuevo Detalle de Muestra</h2>
+                    <span class="close-modal" onclick="closeMuestraDetalleModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="muestraDetalleForm" onsubmit="return saveMuestraDetalle(event)">
+                        <input type="hidden" id="muestraDetalleModalAction" value="create">
+                        <input type="hidden" id="muestraDetalleEditCodigo" value="">
+                        <input type="hidden" id="muestraDetalleEditPosicion" value="">
+
+                        <div class="form-field">
+                            <label class="required">Código de Envío</label>
+                            <select id="muestraDetalleModalCodigoEnvio" name="codigoEnvio" required>
+                                <option value="">Seleccione...</option>
+                                <?php
+                                $query = "SELECT codigoEnvio FROM com_db_muestra_cabecera ORDER BY codigoEnvio DESC";
+                                $result = mysqli_query($conexion, $query);
+                                if ($result) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo '<option value="' . htmlspecialchars($row['codigoEnvio']) . '">' . htmlspecialchars($row['codigoEnvio']) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Posición de Solicitud</label>
+                            <input type="number" id="muestraDetalleModalPosicion" name="posicionSolicitud" min="1" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Fecha de Toma</label>
+                            <input type="date" id="muestraDetalleModalFechaToma" name="fechaToma" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Código de Referencia</label>
+                            <input type="text" id="muestraDetalleModalCodigoRef" name="codigoReferencia" maxlength="50" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="required">Número de Muestras</label>
+                            <input type="number" id="muestraDetalleModalNumMuestras" name="numeroMuestras" min="1" required>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Observaciones</label>
+                            <textarea id="muestraDetalleModalObservaciones" name="observaciones" rows="3"></textarea>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="closeMuestraDetalleModal()">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">💾 Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <script src="planificacion.js"></script>
         <script src="registro.js"></script>
         <script src="reportes.js"></script>
         <script src="manteminiento.js"></script>
+        <script src="laboratorio.js"></script>
+        <script src="tipo_muestra.js"></script>
+        <script src="paquete_analisis.js"></script>
+        <script src="analisis.js"></script>
+        <script src="muestra_cabecera.js"></script>
+        <script src="muestra_detalle.js"></script>
 </body>
 
 </html>

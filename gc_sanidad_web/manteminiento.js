@@ -36,7 +36,7 @@ function saveEmpTrans(event) {
     const params = { action, nombre };
     if (action === 'update') params.codigo = codigo;
 
-    fetch('crud_emp_trans.php', {
+    fetch('mantenimiento.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(params)
@@ -52,13 +52,13 @@ function saveEmpTrans(event) {
     })
     .catch(err => {
         console.error(err);
-        alert('Error al guardar.');
+        alert('Error al eguardar.');
     });
 }
 
 function confirmDelete(codigo) {
     if (confirm('¿Está seguro de eliminar esta empresa de transporte?')) {
-        fetch('crud_emp_trans.php', {
+        fetch('mantenimiento.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
