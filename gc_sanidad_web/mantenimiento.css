@@ -1,0 +1,396 @@
+/**
+ * MANTENIMIENTO.CSS
+ * Estilos específicos para el módulo de Mantenimiento
+ * 
+ * INSTRUCCIONES DE USO:
+ * 1. Descomentar la línea de importación en style.css o index.php
+ * 2. En index.php, agregar: <link rel="stylesheet" href="mantenimiento.css">
+ * 
+ * NOTA: Este archivo está preparado pero comentado para uso futuro
+ */
+
+/* ============================================
+   ENCABEZADOS DE MANTENIMIENTO
+   ============================================ */
+
+.maintenance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.maintenance-header-left h1 {
+    font-size: 28px;
+    color: #2d3748;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.maintenance-header-left p {
+    color: #718096;
+    margin: 0;
+    font-size: 14px;
+}
+
+.maintenance-header-right {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* ============================================
+   CONTENEDOR DE BOTONES DE ACCIÓN
+   ============================================ */
+
+.maintenance-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.maintenance-actions-left {
+    display: flex;
+    gap: 10px;
+}
+
+.maintenance-actions-right {
+    display: flex;
+    gap: 10px;
+}
+
+/* ============================================
+   BOTONES DE DESCARGA EXCEL/CSV
+   ============================================ */
+
+.btn-download {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.btn-download:active {
+    transform: translateY(0);
+}
+
+/* Botón Excel - Verde */
+.btn-excel {
+    background: linear-gradient(135deg, #1e7e34 0%, #28a745 100%);
+    color: white;
+}
+
+.btn-excel:hover {
+    background: linear-gradient(135deg, #1a6b2d 0%, #239e3c 100%);
+}
+
+/* Botón CSV - Azul */
+.btn-csv {
+    background: linear-gradient(135deg, #0056b3 0%, #007bff 100%);
+    color: white;
+}
+
+.btn-csv:hover {
+    background: linear-gradient(135deg, #004a9f 0%, #0069d9 100%);
+}
+
+/* Botón PDF - Rojo (opcional) */
+.btn-pdf {
+    background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
+    color: white;
+}
+
+.btn-pdf:hover {
+    background: linear-gradient(135deg, #bd2130 0%, #c82333 100%);
+}
+
+/* ============================================
+   TABLAS DE MANTENIMIENTO
+   ============================================ */
+
+.maintenance-table-container {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow-x: auto;
+}
+
+.maintenance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.maintenance-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.maintenance-table thead th {
+    padding: 15px 20px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.maintenance-table thead th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.maintenance-table thead th:last-child {
+    border-top-right-radius: 10px;
+}
+
+.maintenance-table tbody tr {
+    border-bottom: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.maintenance-table tbody tr:hover {
+    background: #f7fafc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.maintenance-table tbody td {
+    padding: 15px 20px;
+    color: #4a5568;
+    font-size: 14px;
+}
+
+.maintenance-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* ============================================
+   BADGES Y ETIQUETAS
+   ============================================ */
+
+.maintenance-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-active {
+    background: #c6f6d5;
+    color: #22543d;
+}
+
+.badge-inactive {
+    background: #fed7d7;
+    color: #742a2a;
+}
+
+.badge-pending {
+    background: #feebc8;
+    color: #7c2d12;
+}
+
+/* ============================================
+   FILTROS Y BÚSQUEDA
+   ============================================ */
+
+.maintenance-filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-field {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 13px;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* ============================================
+   PAGINACIÓN
+   ============================================ */
+
+.maintenance-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.pagination-btn {
+    padding: 8px 15px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    color: #4a5568;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.pagination-btn:hover {
+    border-color: #667eea;
+    color: #667eea;
+    background: #f7fafc;
+}
+
+.pagination-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: transparent;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   LOADING Y ESTADOS
+   ============================================ */
+
+.maintenance-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: #718096;
+}
+
+.maintenance-loading::after {
+    content: '⏳';
+    display: block;
+    font-size: 48px;
+    margin-bottom: 15px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.maintenance-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #a0aec0;
+}
+
+.maintenance-empty::before {
+    content: '📭';
+    display: block;
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+/* ============================================
+   RESPONSIVO
+   ============================================ */
+
+@media (max-width: 768px) {
+    .maintenance-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .maintenance-header-right {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .maintenance-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .maintenance-actions-left,
+    .maintenance-actions-right {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .btn-download {
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .maintenance-table-container {
+        overflow-x: scroll;
+    }
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.maintenance-table tbody tr {
+    animation: fadeIn 0.3s ease-out;
+}

@@ -19,10 +19,21 @@ if (!$conexion) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Registro de Muestras - SANIDAD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- CSS Principal -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- CSS de Mantenimiento (COMENTADO - Descomentar para activar estilos específicos de mantenimiento) -->
+    <!-- <link rel="stylesheet" href="mantenimiento.css"> -->
+    
+    <!-- Librería SheetJS para exportar Excel (COMENTADO - Descomentar para activar descargas Excel/CSV) -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script> -->
 </head>
 
 <body>
+    <!-- Botón para mostrar/ocultar sidebar -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    
     <div id="dashboard" class="dashboard active">
         <!-- SIDEBAR -->
         <div class="sidebar">
@@ -142,9 +153,16 @@ if (!$conexion) {
         <div class="main-content">
             <!-- VISTA REGISTRO -->
             <div id="viewRegistro" class="content-view active">
-                <div class="content-header">
-                    <h1>📝 Registro de Muestras</h1>
-                    <p>Complete todos los campos requeridos para realizar el registro</p>
+                <!-- Encabezado con título a la izquierda y botones a la derecha -->
+                <div class="content-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <div>
+                        <h1 style="margin: 0 0 8px 0;">📝 Registro de Muestras</h1>
+                        <p style="margin: 0; color: #718096;">Complete todos los campos requeridos para realizar el registro</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <!-- Botones adicionales pueden ir aquí -->
+                        <!-- Ejemplo: Botón para ver historial, limpiar formulario, etc. -->
+                    </div>
                 </div>
 
                 <div class="form-container">
@@ -184,7 +202,7 @@ if (!$conexion) {
                                             if ($result && mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
                                                     echo '<option value="' . htmlspecialchars($row['codigo']) . '">' .
-                                                        htmlspecialchars($row['nombre']) . '</option>';
+                                                        htmlspecialchars($row['nombre']) . ' (' . htmlspecialchars($row['codigo']) . ')' . '</option>';
                                                 }
                                             } else {
                                                 echo '<option value="">No hay laboratorios disponibles</option>';
@@ -208,7 +226,7 @@ if (!$conexion) {
                                             if ($result && mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
                                                     echo '<option value="' . htmlspecialchars($row['codigo']) . '">' .
-                                                        htmlspecialchars($row['nombre']) . '</option>';
+                                                        htmlspecialchars($row['nombre']) . ' (' . htmlspecialchars($row['codigo']) . ')' . '</option>';
                                                 }
                                             } else {
                                                 echo '<option value="">No hay empresas de transporte disponibles</option>';
@@ -584,7 +602,19 @@ if (!$conexion) {
 <
                 <div class="form-container">
                     <!-- Botón para añadir nueva empresa -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadEmpTransExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadEmpTransCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openModal('create')">
                             ➕ Nueva Empresa
                         </button>
@@ -638,7 +668,19 @@ if (!$conexion) {
 
                 <div class="form-container">
                     <!-- Botón para añadir nuevo laboratorio -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadLaboratorioExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadLaboratorioCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openLaboratorioModal('create')">
                             ➕ Nuevo Laboratorio
                         </button>
@@ -692,7 +734,19 @@ if (!$conexion) {
 
                 <div class="form-container">
                     <!-- Botón para añadir nuevo tipo de muestra -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadTipoMuestraExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadTipoMuestraCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openTipoMuestraModal('create')">
                             ➕ Nuevo Tipo de Muestra
                         </button>
@@ -750,7 +804,19 @@ if (!$conexion) {
 
                 <div class="form-container">
                     <!-- Botón para añadir nuevo paquete -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadPaqueteAnalisisExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadPaqueteAnalisisCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openPaqueteAnalisisModal('create')">
                             ➕ Nuevo Paquete
                         </button>
@@ -779,7 +845,7 @@ if (!$conexion) {
                                         echo '<tr>';
                                         echo '<td>' . htmlspecialchars($row['codigo']) . '</td>';
                                         echo '<td>' . htmlspecialchars($row['nombre']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['tipo_muestra']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['tipo_muestra']) . ' (' . htmlspecialchars($row['tipoMuestra']) . ')' . '</td>';
                                         echo '<td>
                                 <button class="btn-icon" title="Editar" onclick="openPaqueteAnalisisModal(\'edit\', ' . (int) $row['codigo'] . ')">
                                     ✏️
@@ -809,7 +875,19 @@ if (!$conexion) {
 
                 <div class="form-container">
                     <!-- Botón para añadir nuevo análisis -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadAnalisisExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadAnalisisCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openAnalisisModal('create')">
                             ➕ Nuevo Análisis
                         </button>
@@ -829,7 +907,8 @@ if (!$conexion) {
                             </thead>
                             <tbody id="analisisTableBody">
                                 <?php
-                                $query = "SELECT a.codigo, a.nombre, t.nombre as tipo_muestra, p.nombre as paquete_analisis 
+                                $query = "SELECT a.codigo, a.nombre, t.codigo as tipo_muestra_codigo, t.nombre as tipo_muestra, 
+                                          p.codigo as paquete_codigo, p.nombre as paquete_analisis 
                                           FROM com_analisis a 
                                           INNER JOIN com_tipo_muestra t ON a.tipoMuestra = t.codigo 
                                           LEFT JOIN com_paquetes_analisis p ON a.PaqueteAnalisis = p.codigo 
@@ -840,8 +919,8 @@ if (!$conexion) {
                                         echo '<tr>';
                                         echo '<td>' . htmlspecialchars($row['codigo']) . '</td>';
                                         echo '<td>' . htmlspecialchars($row['nombre']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['tipo_muestra']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['paquete_analisis'] ?? 'N/A') . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['tipo_muestra_codigo']) . ' - ' . htmlspecialchars($row['tipo_muestra']) . '</td>';
+                                        echo '<td>' . ($row['paquete_analisis'] ? htmlspecialchars($row['paquete_codigo']) . ' - ' . htmlspecialchars($row['paquete_analisis']) : 'N/A') . '</td>';
                                         echo '<td>
                                 <button class="btn-icon" title="Editar" onclick="openAnalisisModal(\'edit\', ' . (int) $row['codigo'] . ')">
                                     ✏️
@@ -871,7 +950,19 @@ if (!$conexion) {
 
                 <div class="form-container">
                     <!-- Botón para añadir nueva muestra -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadMuestraCabeceraExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadMuestraCabeceraCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openMuestraCabeceraModal('create')">
                             ➕ Nueva Cabecera de Muestra
                         </button>
@@ -893,8 +984,8 @@ if (!$conexion) {
                             </thead>
                             <tbody id="muestraCabeceraTableBody">
                                 <?php
-                                $query = "SELECT m.codigoEnvio, m.fechaEnvio, m.horaEnvio, l.nombre as laboratorio, 
-                                          e.nombre as empresa_trans, m.usuarioResponsable 
+                                $query = "SELECT m.codigoEnvio, m.fechaEnvio, m.horaEnvio, m.laboratorio as codigo_lab, 
+                                          l.nombre as laboratorio, m.empTrans as codigo_emp, e.nombre as empresa_trans, m.usuarioResponsable 
                                           FROM com_db_muestra_cabecera m 
                                           INNER JOIN com_laboratorio l ON m.laboratorio = l.codigo 
                                           INNER JOIN com_emp_trans e ON m.empTrans = e.codigo 
@@ -906,8 +997,8 @@ if (!$conexion) {
                                         echo '<td>' . htmlspecialchars($row['codigoEnvio']) . '</td>';
                                         echo '<td>' . date('d/m/Y', strtotime($row['fechaEnvio'])) . '</td>';
                                         echo '<td>' . date('H:i', strtotime($row['horaEnvio'])) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['laboratorio']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['empresa_trans']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['laboratorio']) . ' (' . htmlspecialchars($row['codigo_lab']) . ')' . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['empresa_trans']) . ' (' . htmlspecialchars($row['codigo_emp']) . ')' . '</td>';
                                         echo '<td>' . htmlspecialchars($row['usuarioResponsable']) . '</td>';
                                         echo '<td>
                                 <button class="btn-icon" title="Ver Detalle" onclick="viewMuestraDetalle(\'' . addslashes($row['codigoEnvio']) . '\')">
@@ -940,8 +1031,8 @@ if (!$conexion) {
                 </div>
 
                 <div class="form-container">
-                    <!-- Filtro por código de envío -->
-                    <div style="margin-bottom: 20px;">
+                    <!-- Filtro por código de envío y botón agregar -->
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
                         <div class="form-field" style="max-width: 400px;">
                             <label>Filtrar por Código de Envío</label>
                             <select id="filtroCodigoEnvio" onchange="filtrarMuestraDetalle()">
@@ -956,6 +1047,22 @@ if (!$conexion) {
                                 }
                                 ?>
                             </select>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <!-- Botones de descarga (comentados para implementación futura) -->
+                            <!-- 
+                            <div class="download-buttons">
+                                <button type="button" class="btn-download btn-excel" onclick="downloadMuestraDetalleExcel()">
+                                    📊 Descargar Excel
+                                </button>
+                                <button type="button" class="btn-download btn-csv" onclick="downloadMuestraDetalleCSV()">
+                                    📄 Descargar CSV
+                                </button>
+                            </div>
+                            -->
+                            <button type="button" class="btn btn-primary" onclick="openMuestraDetalleModal('create')">
+                                ➕ Nuevo Detalle
+                            </button>
                         </div>
                     </div>
 
@@ -1154,7 +1261,7 @@ if (!$conexion) {
                                 $result = mysqli_query($conexion, $query);
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . ' (' . $row['codigo'] . ')' . '</option>';
                                     }
                                 }
                                 ?>
@@ -1197,7 +1304,7 @@ if (!$conexion) {
                                 $result = mysqli_query($conexion, $query);
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . ' (' . $row['codigo'] . ')' . '</option>';
                                     }
                                 }
                                 ?>
@@ -1213,7 +1320,7 @@ if (!$conexion) {
                                 $result = mysqli_query($conexion, $query);
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . ' (' . $row['codigo'] . ')' . '</option>';
                                     }
                                 }
                                 ?>
@@ -1268,7 +1375,7 @@ if (!$conexion) {
                                 $result = mysqli_query($conexion, $query);
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . ' (' . $row['codigo'] . ')' . '</option>';
                                     }
                                 }
                                 ?>
@@ -1284,7 +1391,7 @@ if (!$conexion) {
                                 $result = mysqli_query($conexion, $query);
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . ' (' . $row['codigo'] . ')' . '</option>';
                                     }
                                 }
                                 ?>
@@ -1375,6 +1482,13 @@ if (!$conexion) {
             </div>
         </div>
 
+        <script>
+            // Función para mostrar/ocultar el sidebar
+            function toggleSidebar() {
+                const sidebar = document.querySelector('.sidebar');
+                sidebar.classList.toggle('active');
+            }
+        </script>
         <script src="planificacion.js"></script>
         <script src="registro.js"></script>
         <script src="reportes.js"></script>
@@ -1385,6 +1499,10 @@ if (!$conexion) {
         <script src="analisis.js"></script>
         <script src="muestra_cabecera.js"></script>
         <script src="muestra_detalle.js"></script>
+        
+        <!-- Script de Descarga Excel/CSV (COMENTADO - Descomentar para activar funcionalidad de descarga) -->
+        <!-- Importante: Primero descomentar la librería SheetJS en el <head> -->
+        <!-- <script src="download_excel.js"></script> -->
 </body>
 
 </html>
