@@ -19,7 +19,15 @@ if (!$conexion) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Registro de Muestras - SANIDAD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- CSS Principal -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- CSS de Mantenimiento (COMENTADO - Descomentar para activar estilos específicos de mantenimiento) -->
+    <!-- <link rel="stylesheet" href="mantenimiento.css"> -->
+    
+    <!-- Librería SheetJS para exportar Excel (COMENTADO - Descomentar para activar descargas Excel/CSV) -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script> -->
 </head>
 
 <body>
@@ -145,9 +153,16 @@ if (!$conexion) {
         <div class="main-content">
             <!-- VISTA REGISTRO -->
             <div id="viewRegistro" class="content-view active">
-                <div class="content-header">
-                    <h1>📝 Registro de Muestras</h1>
-                    <p>Complete todos los campos requeridos para realizar el registro</p>
+                <!-- Encabezado con título a la izquierda y botones a la derecha -->
+                <div class="content-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <div>
+                        <h1 style="margin: 0 0 8px 0;">📝 Registro de Muestras</h1>
+                        <p style="margin: 0; color: #718096;">Complete todos los campos requeridos para realizar el registro</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <!-- Botones adicionales pueden ir aquí -->
+                        <!-- Ejemplo: Botón para ver historial, limpiar formulario, etc. -->
+                    </div>
                 </div>
 
                 <div class="form-container">
@@ -1484,6 +1499,10 @@ if (!$conexion) {
         <script src="analisis.js"></script>
         <script src="muestra_cabecera.js"></script>
         <script src="muestra_detalle.js"></script>
+        
+        <!-- Script de Descarga Excel/CSV (COMENTADO - Descomentar para activar funcionalidad de descarga) -->
+        <!-- Importante: Primero descomentar la librería SheetJS en el <head> -->
+        <!-- <script src="download_excel.js"></script> -->
 </body>
 
 </html>
