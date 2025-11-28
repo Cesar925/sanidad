@@ -23,6 +23,9 @@ if (!$conexion) {
 </head>
 
 <body>
+    <!-- Botón para mostrar/ocultar sidebar -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    
     <div id="dashboard" class="dashboard active">
         <!-- SIDEBAR -->
         <div class="sidebar">
@@ -584,7 +587,19 @@ if (!$conexion) {
 <
                 <div class="form-container">
                     <!-- Botón para añadir nueva empresa -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadEmpTransExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadEmpTransCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openModal('create')">
                             ➕ Nueva Empresa
                         </button>
@@ -638,7 +653,19 @@ if (!$conexion) {
 
                 <div class="form-container">
                     <!-- Botón para añadir nuevo laboratorio -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadLaboratorioExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadLaboratorioCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openLaboratorioModal('create')">
                             ➕ Nuevo Laboratorio
                         </button>
@@ -692,7 +719,19 @@ if (!$conexion) {
 
                 <div class="form-container">
                     <!-- Botón para añadir nuevo tipo de muestra -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadTipoMuestraExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadTipoMuestraCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openTipoMuestraModal('create')">
                             ➕ Nuevo Tipo de Muestra
                         </button>
@@ -750,7 +789,19 @@ if (!$conexion) {
 
                 <div class="form-container">
                     <!-- Botón para añadir nuevo paquete -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadPaqueteAnalisisExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadPaqueteAnalisisCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openPaqueteAnalisisModal('create')">
                             ➕ Nuevo Paquete
                         </button>
@@ -809,7 +860,19 @@ if (!$conexion) {
 
                 <div class="form-container">
                     <!-- Botón para añadir nuevo análisis -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadAnalisisExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadAnalisisCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openAnalisisModal('create')">
                             ➕ Nuevo Análisis
                         </button>
@@ -872,7 +935,19 @@ if (!$conexion) {
 
                 <div class="form-container">
                     <!-- Botón para añadir nueva muestra -->
-                    <div style="margin-bottom: 20px; text-align: right;">
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Botones de descarga (comentados para implementación futura) -->
+                        <!-- 
+                        <div class="download-buttons">
+                            <button type="button" class="btn-download btn-excel" onclick="downloadMuestraCabeceraExcel()">
+                                📊 Descargar Excel
+                            </button>
+                            <button type="button" class="btn-download btn-csv" onclick="downloadMuestraCabeceraCSV()">
+                                📄 Descargar CSV
+                            </button>
+                        </div>
+                        -->
+                        <div></div>
                         <button type="button" class="btn btn-primary" onclick="openMuestraCabeceraModal('create')">
                             ➕ Nueva Cabecera de Muestra
                         </button>
@@ -941,8 +1016,8 @@ if (!$conexion) {
                 </div>
 
                 <div class="form-container">
-                    <!-- Filtro por código de envío -->
-                    <div style="margin-bottom: 20px;">
+                    <!-- Filtro por código de envío y botón agregar -->
+                    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
                         <div class="form-field" style="max-width: 400px;">
                             <label>Filtrar por Código de Envío</label>
                             <select id="filtroCodigoEnvio" onchange="filtrarMuestraDetalle()">
@@ -957,6 +1032,22 @@ if (!$conexion) {
                                 }
                                 ?>
                             </select>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <!-- Botones de descarga (comentados para implementación futura) -->
+                            <!-- 
+                            <div class="download-buttons">
+                                <button type="button" class="btn-download btn-excel" onclick="downloadMuestraDetalleExcel()">
+                                    📊 Descargar Excel
+                                </button>
+                                <button type="button" class="btn-download btn-csv" onclick="downloadMuestraDetalleCSV()">
+                                    📄 Descargar CSV
+                                </button>
+                            </div>
+                            -->
+                            <button type="button" class="btn btn-primary" onclick="openMuestraDetalleModal('create')">
+                                ➕ Nuevo Detalle
+                            </button>
                         </div>
                     </div>
 
@@ -1376,6 +1467,13 @@ if (!$conexion) {
             </div>
         </div>
 
+        <script>
+            // Función para mostrar/ocultar el sidebar
+            function toggleSidebar() {
+                const sidebar = document.querySelector('.sidebar');
+                sidebar.classList.toggle('active');
+            }
+        </script>
         <script src="planificacion.js"></script>
         <script src="registro.js"></script>
         <script src="reportes.js"></script>
