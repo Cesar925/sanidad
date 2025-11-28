@@ -184,7 +184,7 @@ if (!$conexion) {
                                             if ($result && mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
                                                     echo '<option value="' . htmlspecialchars($row['codigo']) . '">' .
-                                                        htmlspecialchars($row['nombre']) . '</option>';
+                                                        htmlspecialchars($row['nombre']) . ' (' . htmlspecialchars($row['codigo']) . ')' . '</option>';
                                                 }
                                             } else {
                                                 echo '<option value="">No hay laboratorios disponibles</option>';
@@ -208,7 +208,7 @@ if (!$conexion) {
                                             if ($result && mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
                                                     echo '<option value="' . htmlspecialchars($row['codigo']) . '">' .
-                                                        htmlspecialchars($row['nombre']) . '</option>';
+                                                        htmlspecialchars($row['nombre']) . ' (' . htmlspecialchars($row['codigo']) . ')' . '</option>';
                                                 }
                                             } else {
                                                 echo '<option value="">No hay empresas de transporte disponibles</option>';
@@ -779,7 +779,7 @@ if (!$conexion) {
                                         echo '<tr>';
                                         echo '<td>' . htmlspecialchars($row['codigo']) . '</td>';
                                         echo '<td>' . htmlspecialchars($row['nombre']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['tipo_muestra']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['tipo_muestra']) . ' (' . htmlspecialchars($row['tipoMuestra']) . ')' . '</td>';
                                         echo '<td>
                                 <button class="btn-icon" title="Editar" onclick="openPaqueteAnalisisModal(\'edit\', ' . (int) $row['codigo'] . ')">
                                     ✏️
@@ -829,7 +829,8 @@ if (!$conexion) {
                             </thead>
                             <tbody id="analisisTableBody">
                                 <?php
-                                $query = "SELECT a.codigo, a.nombre, t.nombre as tipo_muestra, p.nombre as paquete_analisis 
+                                $query = "SELECT a.codigo, a.nombre, t.codigo as tipo_muestra_codigo, t.nombre as tipo_muestra, 
+                                          p.codigo as paquete_codigo, p.nombre as paquete_analisis 
                                           FROM com_analisis a 
                                           INNER JOIN com_tipo_muestra t ON a.tipoMuestra = t.codigo 
                                           LEFT JOIN com_paquetes_analisis p ON a.PaqueteAnalisis = p.codigo 
@@ -840,8 +841,8 @@ if (!$conexion) {
                                         echo '<tr>';
                                         echo '<td>' . htmlspecialchars($row['codigo']) . '</td>';
                                         echo '<td>' . htmlspecialchars($row['nombre']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['tipo_muestra']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['paquete_analisis'] ?? 'N/A') . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['tipo_muestra_codigo']) . ' - ' . htmlspecialchars($row['tipo_muestra']) . '</td>';
+                                        echo '<td>' . ($row['paquete_analisis'] ? htmlspecialchars($row['paquete_codigo']) . ' - ' . htmlspecialchars($row['paquete_analisis']) : 'N/A') . '</td>';
                                         echo '<td>
                                 <button class="btn-icon" title="Editar" onclick="openAnalisisModal(\'edit\', ' . (int) $row['codigo'] . ')">
                                     ✏️
@@ -893,8 +894,8 @@ if (!$conexion) {
                             </thead>
                             <tbody id="muestraCabeceraTableBody">
                                 <?php
-                                $query = "SELECT m.codigoEnvio, m.fechaEnvio, m.horaEnvio, l.nombre as laboratorio, 
-                                          e.nombre as empresa_trans, m.usuarioResponsable 
+                                $query = "SELECT m.codigoEnvio, m.fechaEnvio, m.horaEnvio, m.laboratorio as codigo_lab, 
+                                          l.nombre as laboratorio, m.empTrans as codigo_emp, e.nombre as empresa_trans, m.usuarioResponsable 
                                           FROM com_db_muestra_cabecera m 
                                           INNER JOIN com_laboratorio l ON m.laboratorio = l.codigo 
                                           INNER JOIN com_emp_trans e ON m.empTrans = e.codigo 
@@ -906,8 +907,8 @@ if (!$conexion) {
                                         echo '<td>' . htmlspecialchars($row['codigoEnvio']) . '</td>';
                                         echo '<td>' . date('d/m/Y', strtotime($row['fechaEnvio'])) . '</td>';
                                         echo '<td>' . date('H:i', strtotime($row['horaEnvio'])) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['laboratorio']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($row['empresa_trans']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['laboratorio']) . ' (' . htmlspecialchars($row['codigo_lab']) . ')' . '</td>';
+                                        echo '<td>' . htmlspecialchars($row['empresa_trans']) . ' (' . htmlspecialchars($row['codigo_emp']) . ')' . '</td>';
                                         echo '<td>' . htmlspecialchars($row['usuarioResponsable']) . '</td>';
                                         echo '<td>
                                 <button class="btn-icon" title="Ver Detalle" onclick="viewMuestraDetalle(\'' . addslashes($row['codigoEnvio']) . '\')">
@@ -1154,7 +1155,7 @@ if (!$conexion) {
                                 $result = mysqli_query($conexion, $query);
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . ' (' . $row['codigo'] . ')' . '</option>';
                                     }
                                 }
                                 ?>
@@ -1197,7 +1198,7 @@ if (!$conexion) {
                                 $result = mysqli_query($conexion, $query);
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . ' (' . $row['codigo'] . ')' . '</option>';
                                     }
                                 }
                                 ?>
@@ -1213,7 +1214,7 @@ if (!$conexion) {
                                 $result = mysqli_query($conexion, $query);
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . ' (' . $row['codigo'] . ')' . '</option>';
                                     }
                                 }
                                 ?>
@@ -1268,7 +1269,7 @@ if (!$conexion) {
                                 $result = mysqli_query($conexion, $query);
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . ' (' . $row['codigo'] . ')' . '</option>';
                                     }
                                 }
                                 ?>
@@ -1284,7 +1285,7 @@ if (!$conexion) {
                                 $result = mysqli_query($conexion, $query);
                                 if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                                        echo '<option value="' . $row['codigo'] . '">' . htmlspecialchars($row['nombre']) . ' (' . $row['codigo'] . ')' . '</option>';
                                     }
                                 }
                                 ?>
